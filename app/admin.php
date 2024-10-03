@@ -1,0 +1,3 @@
+<?php
+// Panel admin for user with access can moderate the CVs, users ect...
+
