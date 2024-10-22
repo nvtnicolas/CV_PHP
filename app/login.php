@@ -4,30 +4,37 @@ include 'db.php';  // Include database connection
 
 // Handling login
 if (isset($_POST['login'])) {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $username = htmlspecialchars(trim($_POST['username']));
+    $password = htmlspecialchars(trim($_POST['password']));
 
-    // Prepare the query to check if the user exists
-    $stmt = $pdo->prepare('SELECT * FROM users WHERE username = :username');
-    $stmt->execute(['username' => $username]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    // Check if fields are not empty
+    if (!empty($username) && !empty($password)) {
+        // Prepare the query to check if the user exists
+        $stmt = $pdo->prepare('SELECT * FROM users WHERE username = :username');
+        $stmt->execute(['username' => $username]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Verify the password if user exists
-    if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['logged_in'] = true;
-        $_SESSION['username'] = $username;
-        header('Location: index.php');  // Redirect to the home page after login
-        exit();
+        // Verify the password if user exists
+        if ($user && password_verify($password, $user['password'])) {
+            $_SESSION['logged_in'] = true;
+            $_SESSION['username'] = $username;
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['role'] = $user['role']; // Store the user's role in the session
+            header('Location: index.php');
+            exit();
+        } else {
+            $error = "Invalid username or password!";
+        }
     } else {
-        $error = "Invalid username or password!";
+        $error = "Please fill in all fields!";
     }
 }
 
 // Handling registration
 if (isset($_POST['register'])) {
-    $username = $_POST['reg_username'];
-    $email = $_POST['reg_email'];
-    $password = $_POST['reg_password'];
+    $username = htmlspecialchars(trim($_POST['reg_username']));
+    $email = filter_var(trim($_POST['reg_email']), FILTER_SANITIZE_EMAIL);
+    $password = htmlspecialchars(trim($_POST['reg_password']));
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT); // Hashing password
 
     // Check if username or email already exists
@@ -38,9 +45,14 @@ if (isset($_POST['register'])) {
     if ($existingUser) {
         $error = "Username or email already taken!";
     } else {
-        // Insert new user into the database
-        $stmt = $pdo->prepare('INSERT INTO users (username, email, password) VALUES (:username, :email, :password)');
-        $stmt->execute(['username' => $username, 'email' => $email, 'password' => $hashedPassword]);
+        // Insert new user into the database with role 'user'
+        $stmt = $pdo->prepare('INSERT INTO users (username, email, password, role) VALUES (:username, :email, :password, :role)');
+        $stmt->execute([
+            'username' => $username,
+            'email' => $email,
+            'password' => $hashedPassword,
+            'role' => 'user' // Assign the role 'user' by default
+        ]);
         $success = "Account successfully created! You can now log in.";
     }
 }
@@ -52,43 +64,80 @@ if (isset($_POST['register'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login & Register</title>
-    <link rel="stylesheet" href="styles.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="test.css"> <!-- Custom CSS -->
 </head>
 <body>
+<div class="container my-5">
+    <!-- Login Section -->
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Login</h2>
+            <form method="POST" action="">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                    <input type="checkbox" onclick="togglePassword()"> Show Password
+                </div>
+                <button type="submit" name="login" class="btn btn-primary">Login</button>
+            </form>
+            <?php if (isset($error)) { echo '<div class="alert alert-danger mt-3">' . $error . '</div>'; } ?>
+        </div>
 
-<h2>Login</h2>
+        <!-- Registration Section -->
+        <div class="col-md-6">
+            <h2>Create an Account</h2>
+            <form method="POST" action="">
+                <div class="form-group">
+                    <label for="reg_username">Username:</label>
+                    <input type="text" class="form-control" id="reg_username" name="reg_username" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg_email">Email:</label>
+                    <input type="email" class="form-control" id="reg_email" name="reg_email" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg_password">Password:</label>
+                    <input type="password" class="form-control" id="reg_password" name="reg_password" required>
+                    <input type="checkbox" onclick="togglePassword()"> Show Password
+                </div>
+                <button type="submit" name="register" class="btn btn-success">Register</button>
+            </form>
+            <?php if (isset($success)) { echo '<div class="alert alert-success mt-3">' . $success . '</div>'; } ?>
+        </div>
+    </div>
 
-<!-- Login Form -->
-<form method="POST" action="">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required><br><br>
+    <!-- Guest Button -->
+    <div class="text-center mt-5">
+        <a href="Index_no_log.php" class="btn btn-secondary">Continue as Guest</a>
+    </div>
+</div>
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required><br><br>
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-3">
+    <p>&copy; 2024 All rights reserved.</p>
+    <p>Contact us at <a class="text-light" href="Contact.php">nicolas.nguyenvanthnah@ynov.com</a></p>
+</footer>
 
-    <button type="submit" name="login">Login</button>
-</form>
-
-<?php if (isset($error)) { echo '<p style="color:red;">' . $error . '</p>'; } ?>
-<?php if (isset($success)) { echo '<p style="color:green;">' . $success . '</p>'; } ?>
-
-<hr>
-
-<h2>Create an Account</h2>
-
-<!-- Registration Form -->
-<form method="POST" action="">
-    <label for="reg_username">Username:</label>
-    <input type="text" id="reg_username" name="reg_username" required><br><br>
-
-    <label for="reg_email">Email:</label>
-    <input type="email" id="reg_email" name="reg_email" required><br><br>
-
-    <label for="reg_password">Password:</label>
-    <input type="password" id="reg_password" name="reg_password" required><br><br>
-
-    <button type="submit" name="register">Register</button>
-</form>
-
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function togglePassword() {
+        var passwordFields = document.querySelectorAll('input[type="password"]');
+        passwordFields.forEach(function(field) {
+            if (field.type === "password") {
+                field.type = "text";
+            } else {
+                field.type = "password";
+            }
+        });
+    }
+</script>
 </body>
 </html>

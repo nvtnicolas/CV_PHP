@@ -4,7 +4,7 @@ session_start();
 // Check if the user is logged in
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     // Redirect to the login page if not logged in
-    header('Location: login.php');
+    header('Location: Index_no_log.php');
     exit();
 }
 
@@ -13,7 +13,7 @@ if (isset($_GET['page'])) {
     $page = $_GET['page'];
 
     // Define the list of allowed pages
-    $allowedPages = ['admin', 'profile', 'project', 'contact'];
+    $allowedPages = ['index','admin', 'profile', 'project', 'contact'];
 
     // If the page is allowed, include it
     if (in_array($page, $allowedPages)) {
