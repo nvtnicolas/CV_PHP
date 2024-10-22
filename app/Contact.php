@@ -71,10 +71,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button class="btn btn-primary mx-1" name="page" value="project">Projects</button>
             <button class="btn btn-primary mx-1" name="page" value="contact">Contact</button>
         </form>
-        <?php if (!empty($username)): ?>
-            <span>Contact support: <?php echo htmlspecialchars($username); ?></span>
-        <?php endif; ?>
-        <a href="logout.php" class="btn btn-danger">Log out</a>
+        <div class="d-flex align-items-center">
+            <button id="theme-toggle" class="btn btn-light me-2">Dark Mode</button>
+            <?php if (!empty($username)): ?>
+                <span>Contact support: <?php echo htmlspecialchars($username); ?></span>
+            <?php endif; ?>
+            <a href="logout.php" class="btn btn-danger">Log out</a>
+        </div>
     </div>
 </header>
 
@@ -101,12 +104,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </main>
 
 <footer class="container-fluid bg-dark text-white text-center py-3">
-    <p>&copy; 2024 All rights reserved.</p>
+    <p>© 2024 All rights reserved.</p>
     <p>Contact us at <a class="btn btn-light" href="contact.php">nicolas.nguyenvanthnah@ynov.com</a></p>
 </footer>
 
 <!-- Bootstrap JS and dependencies (optional for Bootstrap functionality) -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Script pour basculer entre les thèmes
+    document.getElementById('theme-toggle').addEventListener('click', function() {
+        document.body.classList.toggle('dark-mode');
+        const buttons = document.querySelectorAll('button, .nav-btn');
+        buttons.forEach(button => button.classList.toggle('dark-mode'));
+
+        // Change button text based on the current theme
+        if (document.body.classList.contains('dark-mode')) {
+            this.textContent = 'Light Mode';
+            this.classList.remove('btn-light');
+            this.classList.add('btn-dark');
+        } else {
+            this.textContent = 'Dark Mode';
+            this.classList.remove('btn-dark');
+            this.classList.add('btn-light');
+        }
+    });
+</script>
 </body>
 </html>

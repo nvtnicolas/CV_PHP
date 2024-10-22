@@ -69,6 +69,13 @@ if (isset($_POST['register'])) {
     <link rel="stylesheet" href="test.css"> <!-- Custom CSS -->
 </head>
 <body>
+<header class="bg-dark text-white py-3">
+    <div class="container d-flex justify-content-between align-items-center">
+        <h1 class="h3">Login & Register</h1>
+        <button id="theme-toggle" class="btn btn-light">Dark Mode</button>
+    </div>
+</header>
+
 <div class="container my-5">
     <!-- Login Section -->
     <div class="row">
@@ -120,7 +127,7 @@ if (isset($_POST['register'])) {
 
 <!-- Footer -->
 <footer class="bg-dark text-white text-center py-3">
-    <p>&copy; 2024 All rights reserved.</p>
+    <p>© 2024 All rights reserved.</p>
     <p>Contact us at <a class="text-light" href="Contact.php">nicolas.nguyenvanthnah@ynov.com</a></p>
 </footer>
 
@@ -138,6 +145,24 @@ if (isset($_POST['register'])) {
             }
         });
     }
+
+    // Script pour basculer entre les thèmes
+    document.getElementById('theme-toggle').addEventListener('click', function() {
+        document.body.classList.toggle('dark-mode');
+        const buttons = document.querySelectorAll('button, .nav-btn');
+        buttons.forEach(button => button.classList.toggle('dark-mode'));
+
+        // Change button text based on the current theme
+        if (document.body.classList.contains('dark-mode')) {
+            this.textContent = 'Light Mode';
+            this.classList.remove('btn-light');
+            this.classList.add('btn-dark');
+        } else {
+            this.textContent = 'Dark Mode';
+            this.classList.remove('btn-dark');
+            this.classList.add('btn-light');
+        }
+    });
 </script>
 </body>
 </html>
