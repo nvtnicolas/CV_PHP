@@ -1,12 +1,11 @@
 <?php
 
-include '../db/db.php';
+include __DIR__ . '/../db/db.php'; // Ensure the correct path to the db.php file
 
 if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
     echo 'Access denied. Admins only.';
     exit();
 }
-
 
 if (isset($_POST['delete_user'])) {
     $user_id = $_POST['user_id'];
@@ -32,7 +31,6 @@ if (isset($_POST['update_role'])) {
     }
 }
 
-
 try {
     $stmt = $pdo->query('
         SELECT u.id, u.username, u.email, u.role, c.id AS cv_id, c.fullname, c.education, c.skills, c.experience, c.contact
@@ -41,7 +39,6 @@ try {
         ORDER BY u.id
     ');
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 
     $messages_stmt = $pdo->query('SELECT * FROM contacts ORDER BY created_at DESC');
     $messages = $messages_stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -74,7 +71,6 @@ try {
         </div>
     </div>
 </header>
-
 
 <div class="container">
     <h2>Admin Panel</h2>
@@ -152,7 +148,6 @@ try {
         const buttons = document.querySelectorAll('button, .nav-btn');
         buttons.forEach(button => button.classList.toggle('dark-mode'));
 
-
         if (document.body.classList.contains('dark-mode')) {
             this.textContent = 'Light Mode';
             this.classList.remove('btn-light');
@@ -164,8 +159,5 @@ try {
         }
     });
 </script>
-
-
 </body>
 </html>
-

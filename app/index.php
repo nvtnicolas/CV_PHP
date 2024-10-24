@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-include '../db/db.php';
+include './db/db.php';
 
 
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {

@@ -3,27 +3,25 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-include '../db/db.php';
-
+include __DIR__ . '/../db/db.php'; // Ensure the correct path to the db.php file
 
 $user_id = $_SESSION['user_id'] ?? null;
 $username = $_SESSION['username'] ?? null;
 
 if ($user_id) {
-
+    // Initialize CV fields
     $fullname = '';
     $education = '';
     $skills = '';
     $experience = '';
     $contact = '';
 
-
     try {
+        // Fetch existing CV data if available
         $stmt = $pdo->prepare('SELECT * FROM cvs WHERE user_id = :user_id');
         $stmt->execute(['user_id' => $user_id]);
         $cv = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($cv) {
-
             $fullname = $cv['fullname'];
             $education = $cv['education'];
             $skills = $cv['skills'];
@@ -34,9 +32,9 @@ if ($user_id) {
         echo '<div class="alert alert-danger">Error loading CV data: ' . $e->getMessage() . '</div>';
     }
 
-
+    // Handle form submission
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
+        // Sanitize input data
         $fullname = htmlspecialchars(trim($_POST['fullname']));
         $education = htmlspecialchars(trim($_POST['education']));
         $skills = htmlspecialchars(trim($_POST['skills']));
@@ -44,12 +42,13 @@ if ($user_id) {
         $contact = htmlspecialchars(trim($_POST['contact']));
 
         try {
-
+            // Check if the CV already exists
             $stmt = $pdo->prepare('SELECT id FROM cvs WHERE user_id = :user_id');
             $stmt->execute(['user_id' => $user_id]);
             $cv = $stmt->fetch();
-            if ($cv) {
 
+            if ($cv) {
+                // Update the CV
                 $stmt = $pdo->prepare('UPDATE cvs SET fullname = :fullname, education = :education, skills = :skills, experience = :experience, contact = :contact WHERE user_id = :user_id');
                 $stmt->execute([
                     'fullname' => $fullname,
@@ -61,7 +60,7 @@ if ($user_id) {
                 ]);
                 echo '<div class="alert alert-success">CV updated successfully!</div>';
             } else {
-
+                // Insert a new CV
                 $stmt = $pdo->prepare('INSERT INTO cvs (user_id, fullname, education, skills, experience, contact) VALUES (:user_id, :fullname, :education, :skills, :experience, :contact)');
                 $stmt->execute([
                     'user_id' => $user_id,
@@ -80,7 +79,6 @@ if ($user_id) {
 } else {
     echo '<div class="alert alert-danger">User not logged in.</div>';
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -185,7 +183,5 @@ if ($user_id) {
         }
     });
 </script>
-
-
 </body>
 </html>
