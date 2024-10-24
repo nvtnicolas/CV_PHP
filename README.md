@@ -69,4 +69,4 @@ Contributions are welcome! Feel free to submit a pull request or open an issue f
 
 ## Contact
 
-For any questions or support, please contact [nicolas.nguyenvanthnah@ynov.com](mailto:nicolas.nguyenvanthnah@ynov.com).w a detailed, formatted CV in a clean user interface.
+For any questions or support, please contact [nicolas.nguyenvanthnah@ynov.com](mailto:nicolas.nguyenvanthnah@ynov.com).
