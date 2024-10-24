@@ -59,9 +59,6 @@ Follow these steps to set up and run the project locally:
 3. **View Your CV**: See a preview of your CV and edit it as needed.
 4. **Toggle Dark Mode**: Switch between light and dark modes for improved readability.
 
-## License
-
-This project is licensed under the MIT License. See the `LICENSE` file for details.
 
 ## Contributions
 
