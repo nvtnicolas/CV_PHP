@@ -1,23 +1,27 @@
-# CV_PHP Project
+## CV_PHP Project
 
 ## Overview
 
-This project is a web application built with PHP that allows users to create and manage their CVs. Users can log in, update their profiles, and view their CVs.
+The CV_PHP Project is a web application built using PHP that allows users to create, manage, and display their CVs online. The application supports user authentication, profile management, and CV customization. It also includes a dark mode feature for an improved user experience.
 
 ## Features
 
-- User authentication (login/logout)
-- Profile management
-- CV creation and editing
-- Display CV details
-- Dark mode
+- **User Authentication**: Users can sign in and out securely.
+- **Profile Management**: Users can update their personal information and profiles.
+- **CV Creation and Editing**: Users can create and modify their CVs.
+- **CV Display**: View a detailed, formatted CV in a clean user interface.
+- **Dark Mode**: Switch between light and dark themes for better visibility.
 
-## Requirements
+## Prerequisites
+
+Before running the application, make sure you have the following installed:
 
 - Docker
 - Docker Compose
 
 ## Installation
+
+Follow these steps to set up and run the project locally:
 
 1. **Clone the repository:**
     ```sh
@@ -25,22 +29,44 @@ This project is a web application built with PHP that allows users to create and
     cd CV_PHP
     ```
 
-2. **Set up the database:**
-    - Create a database and import the `schema.sql` file.
-    - Update the database configuration in `config.php`.
+2. **Build the Docker image:**
+    ```sh
+    cd Docker
+    docker build -t cv_php .
+    ```
 
-3. **Build and run the Docker containers:**
+3. **Run the Docker containers:**
     ```sh
     docker-compose up --build
     ```
 
-## Configuration
+4. **Access the application:**
+   Once the containers are running, open your browser and go to:
+    ```sh
+    http://localhost:8000
+    ```
 
-Update the `config.php` file with your database credentials:
-```php
-<?php
-define('DB_HOST', 'db');
-define('DB_NAME', 'cv_db');
-define('DB_USER', 'root');
-define('DB_PASS', 'root');
-?>
+## Project Structure
+
+- `/Docker`: Contains the Docker configuration files.
+- `/app`: Contains the PHP source code for the application.
+- `/public`: Holds the public assets like CSS, JS, and images.
+
+## Usage
+
+1. **Sign Up / Log In**: Create an account or log in if you already have one.
+2. **Create Your CV**: Navigate to the CV creation page and enter your information (work experience, education, skills, etc.).
+3. **View Your CV**: See a preview of your CV and edit it as needed.
+4. **Toggle Dark Mode**: Switch between light and dark modes for improved readability.
+
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
+
+## Contributions
+
+Contributions are welcome! Feel free to submit a pull request or open an issue for any improvements or bug fixes.
+
+## Contact
+
+For any questions or support, please contact [nicolas.nguyenvanthnah@ynov.com](mailto:nicolas.nguyenvanthnah@ynov.com).w a detailed, formatted CV in a clean user interface.

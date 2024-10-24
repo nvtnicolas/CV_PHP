@@ -1,24 +1,24 @@
 <?php
-// Include your database connection file
+
 include 'db.php';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Retrieve the username from the session
+
 $username = $_SESSION['username'] ?? '';
 
-// Handle form submission
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Sanitize the input data to avoid XSS or code injection
+
     $name = htmlspecialchars(trim($_POST['name']));
     $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
     $message = htmlspecialchars(trim($_POST['message']));
 
-    // Validate email format
+
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
         try {
-            // Insert contact data into the 'contacts' table
+
             $stmt = $pdo->prepare('INSERT INTO contacts (name, email, message) VALUES (:name, :email, :message)');
             $stmt->execute([
                 'name' => $name,
@@ -40,16 +40,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact</title>
-    <!-- Bootstrap CSS -->
+
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
+
     <link rel="stylesheet" href="test.css">
-    <!-- Google Maps API -->
+
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBy5f0XGuQoEQfuV42q1ty4fKZ5LNEXHh4"></script>
     <script>
-        // Initialize and add the map
+
         function initMap() {
-            const cityLocation = { lat: 43.6103201, lng: 1.4310661 }; // Replace with your city coordinates
+            const cityLocation = { lat: 43.6103201, lng: 1.4310661 };
             const map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 12,
                 center: cityLocation
@@ -108,11 +108,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <p>Contact us at <a class="btn btn-light" href="contact.php">nicolas.nguyenvanthnah@ynov.com</a></p>
 </footer>
 
-<!-- Bootstrap JS and dependencies (optional for Bootstrap functionality) -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Script pour basculer entre les thèmes
+
     document.getElementById('theme-toggle').addEventListener('click', function() {
         document.body.classList.toggle('dark-mode');
         const buttons = document.querySelectorAll('button, .nav-btn');

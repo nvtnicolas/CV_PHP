@@ -3,7 +3,9 @@ body {
     background-color: #f4f4f4;
     color: #333;
     line-height: 1.6;
-    overflow-x: hidden; /* Empêche le défilement horizontal */
+    overflow-x: hidden;
+    min-height: 100vh;
+
 }
 
 body.dark-mode {
@@ -14,7 +16,7 @@ body.dark-mode {
 header {
     background-color: #333;
     color: white;
-    padding: 5px 20px; /* Un padding légèrement ajusté pour la compacité */
+    padding: 5px 20px;
     text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -27,7 +29,7 @@ button, .nav-btn {
     background-color: #333;
     color: white;
     border: none;
-    padding: 5px 10px; /* Taille compacte des boutons */
+    padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -69,6 +71,7 @@ footer {
     color: white;
     padding: 10px 0;
     text-align: center;
+
 }
 
 footer.dark-mode {

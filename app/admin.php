@@ -1,5 +1,5 @@
 <?php
-// Vérification du rôle de l'utilisateur (doit être admin)
+
 include 'db.php';
 
 if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
@@ -7,10 +7,10 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
     exit();
 }
 
-// Gestion des actions d'administration
+
 if (isset($_POST['delete_user'])) {
     $user_id = $_POST['user_id'];
-    // Supprimer l'utilisateur et son CV associé
+
     try {
         $pdo->prepare('DELETE FROM cvs WHERE user_id = :user_id')->execute(['user_id' => $user_id]);
         $pdo->prepare('DELETE FROM users WHERE id = :user_id')->execute(['user_id' => $user_id]);
@@ -23,7 +23,7 @@ if (isset($_POST['delete_user'])) {
 if (isset($_POST['update_role'])) {
     $user_id = $_POST['user_id'];
     $new_role = $_POST['new_role'];
-    // Mise à jour du rôle de l'utilisateur
+
     try {
         $pdo->prepare('UPDATE users SET role = :role WHERE id = :user_id')->execute(['role' => $new_role, 'user_id' => $user_id]);
         echo '<p style="color:green;">User role updated successfully.</p>';
@@ -32,7 +32,7 @@ if (isset($_POST['update_role'])) {
     }
 }
 
-// Récupération de tous les utilisateurs, CV et messages
+
 try {
     $stmt = $pdo->query('
         SELECT u.id, u.username, u.email, u.role, c.id AS cv_id, c.fullname, c.education, c.skills, c.experience, c.contact
@@ -42,7 +42,7 @@ try {
     ');
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Récupérer les messages envoyés via le formulaire de contact
+
     $messages_stmt = $pdo->query('SELECT * FROM contacts ORDER BY created_at DESC');
     $messages = $messages_stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -152,7 +152,7 @@ try {
         const buttons = document.querySelectorAll('button, .nav-btn');
         buttons.forEach(button => button.classList.toggle('dark-mode'));
 
-        // Change button text based on the current theme
+
         if (document.body.classList.contains('dark-mode')) {
             this.textContent = 'Light Mode';
             this.classList.remove('btn-light');

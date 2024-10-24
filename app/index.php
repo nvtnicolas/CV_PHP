@@ -1,22 +1,22 @@
 <?php
-// session.php
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-include 'db.php';  // Include database connection as $pdo
+include 'db.php';
 
-// Check if the user is logged in
+
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-    header('Location: login.php');  // Redirect to login page if not logged in
+    header('Location: login.php');
     exit();
 }
 
-// Retrieve the user ID and username from the session
+
 $user_id = $_SESSION['user_id'] ?? null;
 $username = $_SESSION['username'] ?? '';
 
-// Check if the user has a CV and retrieve the full name and CV details
+
 try {
     $stmt = $pdo->prepare('SELECT * FROM cvs WHERE user_id = :user_id');
     $stmt->execute(['user_id' => $user_id]);
@@ -33,22 +33,22 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <!-- Bootstrap CSS -->
+
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Your Custom CSS -->
+
     <link rel="stylesheet" href="test.css">
 </head>
 <body>
 
 <?php if (!empty($username)): ?>
 
-    <!-- Header section -->
+
     <header class="container-fluid bg-dark text-white py-3">
         <div class="d-flex justify-content-between align-items-center">
-            <!-- Display the full name or prompt to edit CV -->
+
             <h1 class="h4">Welcome, <?php echo htmlspecialchars($display_name); ?>!</h1>
 
-            <!-- Navigation menu -->
+
             <nav>
                 <ul class="nav">
                     <li class="nav-item"><a class="nav-link text-white" href="router.php?page=index">Home</a></li>
@@ -62,7 +62,7 @@ try {
         </div>
     </header>
 
-    <!-- Main content -->
+
     <main class="container my-5">
         <h2>Welcome to the homepage!</h2>
         <p>This is the content section of your homepage.</p>
@@ -82,7 +82,7 @@ try {
         <?php endif; ?>
     </main>
 
-    <!-- Footer section -->
+
     <footer class="container-fluid bg-dark text-white text-center py-3">
         <p>© 2024 All rights reserved.</p>
         <p>Contact us at <a class="btn btn-light" href="contact.php">nicolas.nguyenvanthnah@ynov.com</a></p>
@@ -90,17 +90,17 @@ try {
 
 <?php endif; ?>
 
-<!-- Bootstrap JS and dependencies (optional for Bootstrap functionality) -->
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Script pour basculer entre les thèmes
+
     document.getElementById('theme-toggle').addEventListener('click', function() {
         document.body.classList.toggle('dark-mode');
         const buttons = document.querySelectorAll('button, .nav-link');
         buttons.forEach(button => button.classList.toggle('dark-mode'));
 
-        // Change button text based on the current theme
+
         if (document.body.classList.contains('dark-mode')) {
             this.textContent = 'Light Mode';
             this.classList.remove('btn-light');

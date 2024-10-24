@@ -1,12 +1,12 @@
 <?php
-// Include the database connection
+
 include 'db.php';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
 try {
-    // Fetch all CVs from the 'cvs' table
+
     $stmt = $pdo->prepare('SELECT cvs.*, users.username FROM cvs JOIN users ON cvs.user_id = users.id');
     $stmt->execute();
     $cvs = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -22,11 +22,80 @@ $username = $_SESSION['username'] ?? null;
 <head>
     <meta charset="UTF-8">
     <title>Projects - View CVs</title>
-    <!-- Bootstrap CSS -->
+
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="test.css">
+    <style>.swiper-container {
+    .cv-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    text-align: center;
+    display: none;
+    transition: all 0.3s ease;
+    }
+
+    .cv-card.active {
+    display: block;
+    }
+
+    .cv-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+
+    .cv-details {
+    display: none;
+    }
+
+    .cv-card.active .cv-details {
+    display: block;
+    }
+
+
+    .swiper-container {
+    width: 100%;
+    padding: 20px 0;
+    }
+
+    .swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+
+
+    .cv-name {
+    cursor: pointer;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 10px;
+    background-color: #eee;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+    }
+
+    body.dark-mode .cv-name {
+    background-color: #555;
+    color: #f4f4f4;
+    }
+
+
+    body.dark-mode .cv-card {
+    background-color: #444;
+    color: #f4f4f4;
+    border-color: #555;
+    }
+
+    body.dark-mode .cv-card:hover {
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+    }</style>
 </head>
 <body>
 <header class="bg-dark text-white py-3">
@@ -56,15 +125,15 @@ $username = $_SESSION['username'] ?? null;
         <div class="swiper-wrapper">
             <?php foreach ($cvs as $cv): ?>
                 <div class="swiper-slide">
-                    <!-- Nom de l'utilisateur, cliquable pour afficher la carte -->
+
                     <div class="cv-name p-3 bg-light border rounded text-center" onclick="toggleCard(this)">
                         <?php echo htmlspecialchars($cv['fullname']); ?>
                     </div>
-                    <!-- La carte est cachée par défaut et ne s'affiche qu'au clic -->
+
                     <div class="cv-card card mt-3">
                         <div class="card-body">
                             <h3 class="card-title"><?php echo htmlspecialchars($cv['fullname']); ?> (<?php echo htmlspecialchars($cv['username']); ?>)</h3>
-                            <!-- Détails cachés par défaut qui apparaissent après le clic -->
+
                             <div class="cv-details">
                                 <p><strong>Education:</strong> <?php echo nl2br(htmlspecialchars($cv['education'])); ?></p>
                                 <p><strong>Skills:</strong> <?php echo nl2br(htmlspecialchars($cv['skills'])); ?></p>
@@ -76,30 +145,29 @@ $username = $_SESSION['username'] ?? null;
                 </div>
             <?php endforeach; ?>
         </div>
-        <!-- Add Pagination and Navigation buttons -->
+
         <div class="swiper-pagination"></div>
         <div class="swiper-button-next"></div>
         <div class="swiper-button-prev"></div>
     </div>
 </div>
 
-<!-- Footer -->
 <footer class="container-fluid bg-dark text-white text-center py-3 mt-5">
     <p>© 2024 All rights reserved.</p>
     <p>Contact us at <a class="btn btn-light" href="contact.php">nicolas.nguyenvanthnah@ynov.com</a></p>
 </footer>
 
-<!-- Bootstrap JS and Swiper JS -->
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 <script>
-    // Fonction pour afficher ou cacher la carte au clic
+
     function toggleCard(nameElement) {
-        const card = nameElement.nextElementSibling; // Sélectionner la carte associée
+        const card = nameElement.nextElementSibling;
         if (card.classList.contains('active')) {
-            card.classList.remove('active'); // Cacher la carte si elle est déjà visible
+            card.classList.remove('active');
         } else {
-            card.classList.add('active'); // Afficher la carte
+            card.classList.add('active');
         }
     }
 
@@ -120,13 +188,13 @@ $username = $_SESSION['username'] ?? null;
         },
     });
 
-    // Script pour basculer entre les thèmes
+
     document.getElementById('theme-toggle').addEventListener('click', function() {
         document.body.classList.toggle('dark-mode');
         const buttons = document.querySelectorAll('button, .nav-btn');
         buttons.forEach(button => button.classList.toggle('dark-mode'));
 
-        // Change button text based on the current theme
+
         if (document.body.classList.contains('dark-mode')) {
             this.textContent = 'Light Mode';
             this.classList.remove('btn-light');

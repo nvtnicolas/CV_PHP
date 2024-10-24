@@ -1,25 +1,24 @@
 <?php
 session_start();
-include 'db.php';  // Include database connection
+include 'db.php';
 
-// Handling login
+
 if (isset($_POST['login'])) {
     $username = htmlspecialchars(trim($_POST['username']));
     $password = htmlspecialchars(trim($_POST['password']));
 
-    // Check if fields are not empty
     if (!empty($username) && !empty($password)) {
-        // Prepare the query to check if the user exists
+
         $stmt = $pdo->prepare('SELECT * FROM users WHERE username = :username');
         $stmt->execute(['username' => $username]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Verify the password if user exists
+
         if ($user && password_verify($password, $user['password'])) {
             $_SESSION['logged_in'] = true;
             $_SESSION['username'] = $username;
             $_SESSION['user_id'] = $user['id'];
-            $_SESSION['role'] = $user['role']; // Store the user's role in the session
+            $_SESSION['role'] = $user['role'];
             header('Location: index.php');
             exit();
         } else {
@@ -30,14 +29,14 @@ if (isset($_POST['login'])) {
     }
 }
 
-// Handling registration
+
 if (isset($_POST['register'])) {
     $username = htmlspecialchars(trim($_POST['reg_username']));
     $email = filter_var(trim($_POST['reg_email']), FILTER_SANITIZE_EMAIL);
     $password = htmlspecialchars(trim($_POST['reg_password']));
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT); // Hashing password
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    // Check if username or email already exists
+
     $stmt = $pdo->prepare('SELECT * FROM users WHERE username = :username OR email = :email');
     $stmt->execute(['username' => $username, 'email' => $email]);
     $existingUser = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -45,13 +44,13 @@ if (isset($_POST['register'])) {
     if ($existingUser) {
         $error = "Username or email already taken!";
     } else {
-        // Insert new user into the database with role 'user'
+
         $stmt = $pdo->prepare('INSERT INTO users (username, email, password, role) VALUES (:username, :email, :password, :role)');
         $stmt->execute([
             'username' => $username,
             'email' => $email,
             'password' => $hashedPassword,
-            'role' => 'user' // Assign the role 'user' by default
+            'role' => 'user'
         ]);
         $success = "Account successfully created! You can now log in.";
     }
@@ -64,9 +63,9 @@ if (isset($_POST['register'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login & Register</title>
-    <!-- Bootstrap CSS -->
+
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="test.css"> <!-- Custom CSS -->
+    <link rel="stylesheet" href="test.css">
 </head>
 <body>
 <header class="bg-dark text-white py-3">
@@ -77,7 +76,7 @@ if (isset($_POST['register'])) {
 </header>
 
 <div class="container my-5">
-    <!-- Login Section -->
+
     <div class="row">
         <div class="col-md-6">
             <h2>Login</h2>
@@ -96,7 +95,7 @@ if (isset($_POST['register'])) {
             <?php if (isset($error)) { echo '<div class="alert alert-danger mt-3">' . $error . '</div>'; } ?>
         </div>
 
-        <!-- Registration Section -->
+
         <div class="col-md-6">
             <h2>Create an Account</h2>
             <form method="POST" action="">
@@ -119,19 +118,19 @@ if (isset($_POST['register'])) {
         </div>
     </div>
 
-    <!-- Guest Button -->
+
     <div class="text-center mt-5">
         <a href="Index_no_log.php" class="btn btn-secondary">Continue as Guest</a>
     </div>
 </div>
 
-<!-- Footer -->
+
 <footer class="bg-dark text-white text-center py-3">
     <p>© 2024 All rights reserved.</p>
     <p>Contact us at <a class="text-light" href="Contact.php">nicolas.nguyenvanthnah@ynov.com</a></p>
 </footer>
 
-<!-- Bootstrap JS and dependencies -->
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -146,13 +145,13 @@ if (isset($_POST['register'])) {
         });
     }
 
-    // Script pour basculer entre les thèmes
+
     document.getElementById('theme-toggle').addEventListener('click', function() {
         document.body.classList.toggle('dark-mode');
         const buttons = document.querySelectorAll('button, .nav-btn');
         buttons.forEach(button => button.classList.toggle('dark-mode'));
 
-        // Change button text based on the current theme
+
         if (document.body.classList.contains('dark-mode')) {
             this.textContent = 'Light Mode';
             this.classList.remove('btn-light');
