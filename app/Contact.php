@@ -1,6 +1,6 @@
 <?php
 
-include 'db.php';
+include '../db/db.php';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="test.css">
+    <link rel="stylesheet" href="assets/css/test.css">
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBy5f0XGuQoEQfuV42q1ty4fKZ5LNEXHh4"></script>
     <script>
@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php if (!empty($username)): ?>
                 <span>Contact support: <?php echo htmlspecialchars($username); ?></span>
             <?php endif; ?>
-            <a href="logout.php" class="btn btn-danger">Log out</a>
+            <a href="auth/logout.php" class="btn btn-danger">Log out</a>
         </div>
     </div>
 </header>

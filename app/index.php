@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-include 'db.php';
+include '../db/db.php';
 
 
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
@@ -36,12 +36,11 @@ try {
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="test.css">
+    <link rel="stylesheet" href="assets/css/test.css">
 </head>
 <body>
 
 <?php if (!empty($username)): ?>
-
 
     <header class="container-fluid bg-dark text-white py-3">
         <div class="d-flex justify-content-between align-items-center">
@@ -55,7 +54,7 @@ try {
                     <li class="nav-item"><a class="nav-link text-white" href="router.php?page=profile">Profile</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="router.php?page=project">Projects</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="router.php?page=contact">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="logout.php">Log out</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="auth/logout.php">Log out</a></li>
                 </ul>
             </nav>
             <button id="theme-toggle" class="btn btn-light">Dark Mode</button>

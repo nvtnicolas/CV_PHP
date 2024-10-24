@@ -1,6 +1,6 @@
 <?php
 
-include 'db.php';
+include '../db/db.php';
 
 if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
     echo 'Access denied. Admins only.';
@@ -56,12 +56,12 @@ try {
     <meta charset="UTF-8">
     <title>Admin Panel</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="test.css">
+    <link rel="stylesheet" href="../assets/css/test.css">
 </head>
 <body>
 <header class="bg-dark text-white p-3 mb-4">
     <div class="container d-flex justify-content-between align-items-center">
-        <form method="GET" action="router.php" class="d-flex">
+        <form method="GET" action="../router.php" class="d-flex">
             <button class="btn btn-secondary mr-2" name="page" value="index">Home</button>
             <button class="btn btn-secondary mr-2" name="page" value="admin">Admin</button>
             <button class="btn btn-secondary mr-2" name="page" value="profile">Profile</button>
@@ -70,7 +70,7 @@ try {
         </form>
         <div>
             <button id="theme-toggle" class="btn btn-light">Dark Mode</button>
-            <a href="logout.php" class="btn btn-danger">Log out</a>
+            <a href="../auth/logout.php" class="btn btn-danger">Log out</a>
         </div>
     </div>
 </header>

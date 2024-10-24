@@ -50,8 +50,10 @@ Follow these steps to set up and run the project locally:
 
 - `/Docker`: Contains the Docker configuration files.
 - `/app`: Contains the PHP source code for the application.
-- `/public`: Holds the public assets like CSS, JS, and images.
-
+- `/assets`: Holds the public assets like CSS, JS, and images.
+- `/auth` : Contains the authentication files.
+- `/db`: Contains the database configuration files.
+- `/user`: Contains the user profile files.
 ## Usage
 
 1. **Sign Up / Log In**: Create an account or log in if you already have one.

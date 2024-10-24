@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'db.php';
+include '../db/db.php';
 
 
 if (isset($_POST['login'])) {
@@ -19,7 +19,7 @@ if (isset($_POST['login'])) {
             $_SESSION['username'] = $username;
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['role'] = $user['role'];
-            header('Location: index.php');
+            header('Location: ../index.php');
             exit();
         } else {
             $error = "Invalid username or password!";
@@ -65,7 +65,7 @@ if (isset($_POST['register'])) {
     <title>Login & Register</title>
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="test.css">
+    <link rel="stylesheet" href="../assets/css/test.css">
 </head>
 <body>
 <header class="bg-dark text-white py-3">
@@ -120,14 +120,14 @@ if (isset($_POST['register'])) {
 
 
     <div class="text-center mt-5">
-        <a href="Index_no_log.php" class="btn btn-secondary">Continue as Guest</a>
+        <a href="../Index_no_log.php" class="btn btn-secondary">Continue as Guest</a>
     </div>
 </div>
 
 
 <footer class="bg-dark text-white text-center py-3">
     <p>© 2024 All rights reserved.</p>
-    <p>Contact us at <a class="text-light" href="Contact.php">nicolas.nguyenvanthnah@ynov.com</a></p>
+    <p>Contact us at <a class="text-light" href="../Contact.php">nicolas.nguyenvanthnah@ynov.com</a></p>
 </footer>
 
 

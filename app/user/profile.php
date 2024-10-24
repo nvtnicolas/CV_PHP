@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-include 'db.php';
+include '../db/db.php';
 
 
 $user_id = $_SESSION['user_id'] ?? null;
@@ -89,7 +89,7 @@ if ($user_id) {
     <title>Create or Update CV</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="test.css">
+    <link rel="stylesheet" href="../assets/css/test.css">
 </head>
 <body>
 <header>
@@ -99,19 +99,19 @@ if ($user_id) {
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="router.php?page=index">Home</a>
+                        <a class="nav-link" href="../router.php?page=index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="router.php?page=admin">Admin</a>
+                        <a class="nav-link" href="../router.php?page=admin">Admin</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="router.php?page=profile">Profile</a>
+                        <a class="nav-link" href="../router.php?page=profile">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="router.php?page=project">Projects</a>
+                        <a class="nav-link" href="../router.php?page=project">Projects</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="router.php?page=contact">Contact</a>
+                        <a class="nav-link" href="../router.php?page=contact">Contact</a>
                     </li>
                 </ul>
                 <div class="d-flex align-items-center">
@@ -120,7 +120,7 @@ if ($user_id) {
                         <?php if ($username): ?>
                             Hello, <?php echo htmlspecialchars($username); ?>
                         <?php endif; ?>
-                        <a href="logout.php" class="btn btn-outline-light">Log out</a>
+                        <a href="../auth/logout.php" class="btn btn-outline-light">Log out</a>
                     </span>
                 </div>
             </div>

@@ -13,7 +13,7 @@ if (isset($_GET['page'])) {
     $page = $_GET['page'];
 
 
-    $allowedPages = ['index','admin', 'profile', 'project', 'contact'];
+    $allowedPages = ['/app/index','/admin/admin', '/user/profile', 'project', 'Contact'];
 
 
     if (in_array($page, $allowedPages)) {

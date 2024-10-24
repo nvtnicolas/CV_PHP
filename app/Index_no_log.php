@@ -7,7 +7,7 @@
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="test.css">
+    <link rel="stylesheet" href="assets/css/test.css">
 </head>
 <body>
 
@@ -16,7 +16,7 @@
     <h1 class="mb-4">Welcome to the Homepage!</h1>
 
 
-    <a href="login.php" class="btn btn-primary btn-lg mb-3">Login</a>
+    <a href="auth/login.php" class="btn btn-primary btn-lg mb-3">Login</a>
 
 
     <a href="contact.php" class="btn btn-secondary btn-lg mb-3">Contact Us</a>
