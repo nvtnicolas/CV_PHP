@@ -54,6 +54,12 @@ try {
     <title>Admin Panel</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/test.css">
+    <style>
+
+        body.dark-mode td, body.dark-mode th {
+            color: #f4f4f4; /* Set table text to white */
+        }
+    </style>
 </head>
 <body>
 <header class="bg-dark text-white p-3 mb-4">
@@ -70,6 +76,7 @@ try {
             <a href="../auth/logout.php" class="btn btn-danger">Log out</a>
         </div>
     </div>
+
 </header>
 
 <div class="container">
@@ -143,21 +150,20 @@ try {
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-    document.getElementById('theme-toggle').addEventListener('click', function() {
-        document.body.classList.toggle('dark-mode');
-        const buttons = document.querySelectorAll('button, .nav-btn');
-        buttons.forEach(button => button.classList.toggle('dark-mode'));
+document.getElementById('theme-toggle').addEventListener('click', function() {
+document.body.classList.toggle('dark-mode');
 
-        if (document.body.classList.contains('dark-mode')) {
-            this.textContent = 'Light Mode';
-            this.classList.remove('btn-light');
-            this.classList.add('btn-dark');
-        } else {
-            this.textContent = 'Dark Mode';
-            this.classList.remove('btn-dark');
-            this.classList.add('btn-light');
-        }
-    });
+// Update text and button color dynamically
+if (document.body.classList.contains('dark-mode')) {
+this.textContent = 'Light Mode';
+this.classList.remove('btn-light');
+this.classList.add('btn-dark');
+} else {
+this.textContent = 'Dark Mode';
+this.classList.remove('btn-dark');
+this.classList.add('btn-light');
+}
+});
 </script>
 </body>
 </html>

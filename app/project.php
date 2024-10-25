@@ -69,8 +69,8 @@ $username = $_SESSION['username'] ?? null;
             text-align: center;
         }
         body.dark-mode .cv-name {
-            background-color: #555;
-            color: #f4f4f4;
+            background-color: #444; /* Change this to match the card background */
+            color: #f4f4f4; /* Light text color */
         }
         body.dark-mode .cv-card {
             background-color: #444;
@@ -79,6 +79,17 @@ $username = $_SESSION['username'] ?? null;
         }
         body.dark-mode .cv-card:hover {
             box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+        }
+        body.dark-mode .cv-card .cv-details {
+            background-color: #666; /* Fond gris pour les détails ouverts */
+            color: #f4f4f4; /* Texte blanc pour les détails ouverts */
+        }
+        body.dark-mode .cv-card:not(.active) {
+            background-color: #555; /* Fond gris foncé pour les cartes non ouvertes */
+            color: #f4f4f4; /* Texte blanc pour les cartes non ouvertes */
+        }
+        body.dark-mode .bg-light {
+            background-color: #3d3d3d !important;
         }
     </style>
 </head>

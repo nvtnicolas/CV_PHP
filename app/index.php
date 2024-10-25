@@ -37,7 +37,28 @@ try {
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="assets/css/test.css">
+    <style>
+        .dark-mode {
+            background-color: #333;
+            color: #fff;
+        }/* Dark mode styles */
+        body.dark-mode {
+            background-color: #333;
+            color: #f4f4f4;
+        }
+
+        body.dark-mode .cv-card {
+            background-color: #222; /* Darker background for the CV card */
+            color: #f4f4f4; /* Light text for contrast */
+        }
+
+        body.dark-mode .card-body {
+            background-color: #222; /* Darker background for the card body */
+            color: #f4f4f4; /* Light text for contrast */
+        }
+    </style>
 </head>
+
 <body>
 
 <?php if (!empty($username)): ?>
