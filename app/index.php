@@ -6,16 +6,13 @@ if (session_status() === PHP_SESSION_NONE) {
 
 include './db/db.php';
 
-
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     header('Location: login.php');
     exit();
 }
 
-
 $user_id = $_SESSION['user_id'] ?? null;
 $username = $_SESSION['username'] ?? '';
-
 
 try {
     $stmt = $pdo->prepare('SELECT * FROM cvs WHERE user_id = :user_id');
@@ -27,6 +24,7 @@ try {
     $display_name = 'Edit your CV in profile';
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,13 +33,13 @@ try {
     <title>Home</title>
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="assets/css/test.css">
     <style>
         .dark-mode {
             background-color: #333;
             color: #fff;
-        }/* Dark mode styles */
+        }
+        /* Dark mode styles */
         body.dark-mode {
             background-color: #333;
             color: #f4f4f4;
@@ -58,17 +56,13 @@ try {
         }
     </style>
 </head>
-
 <body>
 
 <?php if (!empty($username)): ?>
 
     <header class="container-fluid bg-dark text-white py-3">
         <div class="d-flex justify-content-between align-items-center">
-
             <h1 class="h4">Welcome, <?php echo htmlspecialchars($display_name); ?>!</h1>
-
-
             <nav>
                 <ul class="nav">
                     <li class="nav-item"><a class="nav-link text-white" href="router.php?page=index">Home</a></li>
@@ -82,7 +76,6 @@ try {
         </div>
     </header>
 
-
     <main class="container my-5">
         <h2>Welcome to the homepage!</h2>
         <p>This is the content section of your homepage.</p>
@@ -95,13 +88,13 @@ try {
                     <p><strong>Skills:</strong> <?php echo nl2br(htmlspecialchars($cv['skills'])); ?></p>
                     <p><strong>Experience:</strong> <?php echo nl2br(htmlspecialchars($cv['experience'])); ?></p>
                     <p><strong>Contact:</strong> <?php echo nl2br(htmlspecialchars($cv['contact'])); ?></p>
+                    <p><strong>Description:</strong> <?php echo nl2br(htmlspecialchars($cv['description'])); ?></p>
                 </div>
             </div>
         <?php else: ?>
             <p>No CV found. Please <a href="router.php?page=profile">edit your profile</a> to add your CV.</p>
         <?php endif; ?>
     </main>
-
 
     <footer class="container-fluid bg-dark text-white text-center py-3">
         <p>© 2024 All rights reserved.</p>
@@ -110,16 +103,13 @@ try {
 
 <?php endif; ?>
 
-
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-
     document.getElementById('theme-toggle').addEventListener('click', function() {
         document.body.classList.toggle('dark-mode');
         const buttons = document.querySelectorAll('button, .nav-link');
         buttons.forEach(button => button.classList.toggle('dark-mode'));
-
 
         if (document.body.classList.contains('dark-mode')) {
             this.textContent = 'Light Mode';
@@ -134,3 +124,4 @@ try {
 </script>
 </body>
 </html>
+

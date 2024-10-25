@@ -31,9 +31,31 @@ if (isset($_POST['update_role'])) {
     }
 }
 
+if (isset($_POST['delete_message'])) {
+    $message_id = $_POST['message_id'];
+
+    try {
+        $pdo->prepare('DELETE FROM contacts WHERE id = :message_id')->execute(['message_id' => $message_id]);
+        echo '<p style="color:green;">Message deleted successfully.</p>';
+    } catch (PDOException $e) {
+        echo '<p style="color:red;">Error deleting message: ' . $e->getMessage() . '</p>';
+    }
+}
+
+if (isset($_POST['delete_cvs'])) {
+    $user_id = $_POST['user_id'];
+
+    try {
+        $pdo->prepare('DELETE FROM cvs WHERE user_id = :user_id')->execute(['user_id' => $user_id]);
+        echo '<p style="color:green;">CV deleted successfully.</p>';
+    } catch (PDOException $e) {
+        echo '<p style="color:red;">Error deleting CV: ' . $e->getMessage() . '</p>';
+    }
+}
+
 try {
     $stmt = $pdo->query('
-        SELECT u.id, u.username, u.email, u.role, c.id AS cv_id, c.fullname, c.education, c.skills, c.experience, c.contact
+        SELECT u.id, u.username, u.email, u.role, c.id AS cv_id, c.fullname, c.education, c.skills, c.experience, c.contact, c.description
         FROM users u
         LEFT JOIN cvs c ON u.id = c.user_id
         ORDER BY u.id
@@ -42,10 +64,13 @@ try {
 
     $messages_stmt = $pdo->query('SELECT * FROM contacts ORDER BY created_at DESC');
     $messages = $messages_stmt->fetchAll(PDO::FETCH_ASSOC);
+
 } catch (PDOException $e) {
     echo '<p style="color:red;">Error loading data: ' . $e->getMessage() . '</p>';
 }
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -55,9 +80,36 @@ try {
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/test.css">
     <style>
+        /* General table style to prevent headers from stacking */
+        table {
+            width: 100%;
+            table-layout: fixed; /* Ensures columns don't shrink */
+        }
 
-        body.dark-mode td, body.dark-mode th {
-            color: #f4f4f4; /* Set table text to white */
+        th, td {
+            white-space: nowrap; /* Prevents wrapping */
+            text-align: left;
+            padding: 8px;
+            vertical-align: middle; /* Centers text vertically */
+            overflow: hidden; /* Hide overflow */
+            text-overflow: ellipsis; /* Add ellipsis for overflow text */
+        }
+
+        /* Fixed width for specific columns */
+        .fixed-width {
+            max-width: 200px; /* Adjust as needed */
+            word-wrap: break-word;
+        }
+
+        /* Scrollable cell content */
+        .scrollable-cell {
+            max-height: 100px; /* Adjust as needed */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+        /* Dark mode styles */
+        body.dark-mode th, body.dark-mode td {
+            color: #f4f4f4;
         }
     </style>
 </head>
@@ -76,33 +128,32 @@ try {
             <a href="../auth/logout.php" class="btn btn-danger">Log out</a>
         </div>
     </div>
-
 </header>
 
 <div class="container">
     <h2>Admin Panel</h2>
 
-    <h3>Users and CVs</h3>
+    <h3>Users</h3>
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Full Name (CV)</th>
-            <th>Actions</th>
+            <th class="fixed-width">ID</th>
+            <th class="fixed-width">Username</th>
+            <th class="fixed-width">Email</th>
+            <th class="fixed-width">Role</th>
+            <th class="fixed-width">Full Name (CV)</th>
+            <th class="fixed-width">Actions</th>
         </tr>
         </thead>
         <tbody>
         <?php foreach ($users as $user): ?>
             <tr>
-                <td><?php echo htmlspecialchars($user['id']); ?></td>
-                <td><?php echo htmlspecialchars($user['username']); ?></td>
-                <td><?php echo htmlspecialchars($user['email']); ?></td>
-                <td><?php echo htmlspecialchars($user['role']); ?></td>
-                <td><?php echo $user['fullname'] ? htmlspecialchars($user['fullname']) : 'No CV for the moment'; ?></td>
-                <td>
+                <td class="fixed-width"><?php echo htmlspecialchars($user['id']); ?></td>
+                <td class="fixed-width"><?php echo htmlspecialchars($user['username']); ?></td>
+                <td class="fixed-width"><?php echo htmlspecialchars($user['email']); ?></td>
+                <td class="fixed-width"><?php echo htmlspecialchars($user['role']); ?></td>
+                <td class="fixed-width"><?php echo $user['fullname'] ? htmlspecialchars($user['fullname']) : 'No CV for the moment'; ?></td>
+                <td class="fixed-width">
                     <form method="POST" action="" class="d-inline">
                         <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
                         <button type="submit" name="delete_user" class="btn btn-danger btn-sm">Delete User</button>
@@ -121,25 +172,63 @@ try {
         </tbody>
     </table>
 
+    <h3>CV by user</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th class="fixed-width">Full Name</th>
+            <th class="fixed-width">Education</th>
+            <th class="fixed-width">Skills</th>
+            <th class="fixed-width">Experience</th>
+            <th class="fixed-width">Contact</th>
+            <th class="fixed-width">Description</th>
+            <th class="fixed-width">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($users as $user): ?>
+            <tr>
+                <td class="fixed-width scrollable-cell"><?php echo $user['fullname'] !== null ? htmlspecialchars($user['fullname']) : 'No CV for the moment'; ?></td>
+                <td class="fixed-width scrollable-cell"><?php echo $user['education'] !== null ? htmlspecialchars($user['education']) : 'No CV for the moment'; ?></td>
+                <td class="fixed-width scrollable-cell"><?php echo $user['skills'] !== null ? htmlspecialchars($user['skills']) : 'No CV for the moment'; ?></td>
+                <td class="fixed-width scrollable-cell"><?php echo $user['experience'] !== null ? htmlspecialchars($user['experience']) : 'No CV for the moment'; ?></td>
+                <td class="fixed-width scrollable-cell"><?php echo $user['contact'] !== null ? htmlspecialchars($user['contact']) : 'No CV for the moment'; ?></td>
+                <td class="fixed-width scrollable-cell"><?php echo $user['description'] !== null ? htmlspecialchars($user['description']) : 'No CV for the moment'; ?></td>
+                <td>
+                    <form method="POST" action="" class="d-inline">
+                        <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                        <button type="submit" name="delete_user" class="btn btn-danger btn-sm">Delete User</button>
+                    </form>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+
     <h3>Messages from Users</h3>
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Message</th>
-            <th>Sent At</th>
+            <th class="fixed-width">ID</th>
+            <th class="fixed-width">Name</th>
+            <th class="fixed-width">Email</th>
+            <th class="fixed-width">Message</th>
+            <th class="fixed-width">Sent At</th>
         </tr>
         </thead>
         <tbody>
         <?php foreach ($messages as $message): ?>
             <tr>
-                <td><?php echo htmlspecialchars($message['id']); ?></td>
-                <td><?php echo htmlspecialchars($message['name']); ?></td>
-                <td><?php echo htmlspecialchars($message['email']); ?></td>
-                <td><?php echo htmlspecialchars($message['message']); ?></td>
-                <td><?php echo htmlspecialchars($message['created_at']); ?></td>
+                <td class="fixed-width"><?php echo htmlspecialchars($message['id']); ?></td>
+                <td class="fixed-width"><?php echo htmlspecialchars($message['name']); ?></td>
+                <td class="fixed-width"><?php echo htmlspecialchars($message['email']); ?></td>
+                <td class="fixed-width scrollable-cell"><?php echo htmlspecialchars($message['message']); ?></td>
+                <td class="fixed-width"><?php echo htmlspecialchars($message['created_at']); ?></td>
+                <td>
+                    <form method="POST" action="" class="d-inline">
+                        <input type="hidden" name="message_id" value="<?php echo $message['id']; ?>">
+                        <button type="submit" name="delete_message" class="btn btn-danger btn-sm">Delete Message</button>
+                    </form>
             </tr>
         <?php endforeach; ?>
         </tbody>
@@ -150,20 +239,21 @@ try {
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-document.getElementById('theme-toggle').addEventListener('click', function() {
-document.body.classList.toggle('dark-mode');
+    document.getElementById('theme-toggle').addEventListener('click', function() {
+        document.body.classList.toggle('dark-mode');
 
-// Update text and button color dynamically
-if (document.body.classList.contains('dark-mode')) {
-this.textContent = 'Light Mode';
-this.classList.remove('btn-light');
-this.classList.add('btn-dark');
-} else {
-this.textContent = 'Dark Mode';
-this.classList.remove('btn-dark');
-this.classList.add('btn-light');
-}
-});
+        // Update text and button color dynamically
+        if (document.body.classList.contains('dark-mode')) {
+            this.textContent = 'Light Mode';
+            this.classList.remove('btn-light');
+            this.classList.add('btn-dark');
+        } else {
+            this.textContent = 'Dark Mode';
+            this.classList.remove('btn-dark');
+            this.classList.add('btn-light');
+        }
+    });
 </script>
 </body>
 </html>
+

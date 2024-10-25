@@ -97,3 +97,8 @@ body.dark-mode .container .my-5 .cv-card.card.mt-4 .card-body {
     background-color: #444;
     color: #f4f4f4;
 }
+.fixed-width {
+    max-height: 100px; /* Définissez la hauteur maximale souhaitée */
+    overflow-y: auto; /* Ajoutez un défilement vertical */
+    display: block; /* Nécessaire pour que le défilement fonctionne correctement */
+}

@@ -15,6 +15,7 @@ if ($user_id) {
     $skills = '';
     $experience = '';
     $contact = '';
+    $description = ''; // Initialize description
 
     try {
         // Fetch existing CV data if available
@@ -27,6 +28,7 @@ if ($user_id) {
             $skills = $cv['skills'];
             $experience = $cv['experience'];
             $contact = $cv['contact'];
+            $description = $cv['description']; // Fetch description
         }
     } catch (PDOException $e) {
         echo '<div class="alert alert-danger">Error loading CV data: ' . $e->getMessage() . '</div>';
@@ -40,6 +42,7 @@ if ($user_id) {
         $skills = htmlspecialchars(trim($_POST['skills']));
         $experience = htmlspecialchars(trim($_POST['experience']));
         $contact = htmlspecialchars(trim($_POST['contact']));
+        $description = htmlspecialchars(trim($_POST['description'])); // Sanitize description
 
         try {
             // Check if the CV already exists
@@ -49,26 +52,28 @@ if ($user_id) {
 
             if ($cv) {
                 // Update the CV
-                $stmt = $pdo->prepare('UPDATE cvs SET fullname = :fullname, education = :education, skills = :skills, experience = :experience, contact = :contact WHERE user_id = :user_id');
+                $stmt = $pdo->prepare('UPDATE cvs SET fullname = :fullname, education = :education, skills = :skills, experience = :experience, contact = :contact, description = :description WHERE user_id = :user_id');
                 $stmt->execute([
                     'fullname' => $fullname,
                     'education' => $education,
                     'skills' => $skills,
                     'experience' => $experience,
                     'contact' => $contact,
+                    'description' => $description, // Update description
                     'user_id' => $user_id
                 ]);
                 echo '<div class="alert alert-success">CV updated successfully!</div>';
             } else {
                 // Insert a new CV
-                $stmt = $pdo->prepare('INSERT INTO cvs (user_id, fullname, education, skills, experience, contact) VALUES (:user_id, :fullname, :education, :skills, :experience, :contact)');
+                $stmt = $pdo->prepare('INSERT INTO cvs (user_id, fullname, education, skills, experience, contact, description) VALUES (:user_id, :fullname, :education, :skills, :experience, :contact, :description)');
                 $stmt->execute([
                     'user_id' => $user_id,
                     'fullname' => $fullname,
                     'education' => $education,
                     'skills' => $skills,
                     'experience' => $experience,
-                    'contact' => $contact
+                    'contact' => $contact,
+                    'description' => $description // Insert description
                 ]);
                 echo '<div class="alert alert-success">CV created successfully!</div>';
             }
@@ -80,6 +85,7 @@ if ($user_id) {
     echo '<div class="alert alert-danger">User not logged in.</div>';
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -155,12 +161,17 @@ if ($user_id) {
             <textarea class="form-control" id="contact" name="contact" rows="4" required><?php echo htmlspecialchars($contact); ?></textarea>
         </div>
 
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="4" required><?php echo htmlspecialchars($description); ?></textarea>
+        </div>
+
         <button type="submit" class="btn btn-primary">Save CV</button>
     </form>
 </div>
 
 <footer class="bg-dark text-white text-center py-3">
-    <p>&copy; 2024 All rights reserved.</p>
+    <p>© 2024 All rights reserved.</p>
     <p>Contact us at <a href="contact.php" class="btn btn-light">nicolas.nguyenvanthnah@ynov.com</a></p>
 </footer>
 
