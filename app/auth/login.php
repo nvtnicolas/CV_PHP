@@ -88,7 +88,7 @@ if (isset($_POST['register'])) {
                 <div class="form-group">
                     <label for="password">Password:</label>
                     <input type="password" class="form-control" id="password" name="password" required>
-                    <input type="checkbox" onclick="togglePassword()"> Show Password
+
                 </div>
                 <button type="submit" name="login" class="btn btn-primary">Login</button>
             </form>
@@ -110,7 +110,7 @@ if (isset($_POST['register'])) {
                 <div class="form-group">
                     <label for="reg_password">Password:</label>
                     <input type="password" class="form-control" id="reg_password" name="reg_password" required>
-                    <input type="checkbox" onclick="togglePassword()"> Show Password
+
                 </div>
                 <button type="submit" name="register" class="btn btn-success">Register</button>
             </form>
@@ -121,6 +121,7 @@ if (isset($_POST['register'])) {
 
     <div class="text-center mt-5">
         <a href="../Index_no_log.php" class="btn btn-secondary">Continue as Guest</a>
+        <input type="checkbox" onclick="togglePassword()"> Show Password
     </div>
 </div>
 
@@ -135,15 +136,22 @@ if (isset($_POST['register'])) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     function togglePassword() {
-        var passwordFields = document.querySelectorAll('input[type="password"]');
-        passwordFields.forEach(function(field) {
-            if (field.type === "password") {
-                field.type = "text";
-            } else {
-                field.type = "password";
-            }
-        });
+        var loginPasswordField = document.querySelector('input[name="password"]');
+        var registerPasswordField = document.querySelector('input[name="reg_password"]');
+        var checkbox = document.querySelector('input[type="checkbox"]');
+
+        if (checkbox.checked) {
+            if (loginPasswordField) loginPasswordField.type = "text";
+            if (registerPasswordField) registerPasswordField.type = "text";
+        } else {
+            if (loginPasswordField) loginPasswordField.type = "password";
+            if (registerPasswordField) registerPasswordField.type = "password";
+        }
     }
+
+
+
+
 
 
     document.getElementById('theme-toggle').addEventListener('click', function() {

@@ -24,7 +24,13 @@ $username = $_SESSION['username'] ?? null;
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/test.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
+        .profile-image {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+        }
         .swiper-container {
             width: 100%;
             padding: 20px 0;
@@ -122,6 +128,14 @@ $username = $_SESSION['username'] ?? null;
                 <div class="swiper-slide">
                     <div class="cv-name p-3 bg-light border rounded text-center" onclick="toggleCard(this)">
                         <?php echo htmlspecialchars($cv['fullname']); ?>
+                        <?php
+                        $imagePath = $cv['profile_image'];
+                        ?>
+                        <?php if (!empty($cv['profile_image']) && file_exists(__DIR__ . '/' . $imagePath)): ?>
+                            <img src="<?php echo htmlspecialchars($imagePath); ?>" alt="Profile Image" class="profile-image">
+                        <?php else: ?>
+                            <img src="./uploads/profil.png" alt="Default Profile Image" class="profile-image">
+                        <?php endif; ?>
                     </div>
                     <div class="cv-card card mt-3">
                         <div class="card-body">
@@ -133,6 +147,7 @@ $username = $_SESSION['username'] ?? null;
                                 <p><strong>Contact:</strong> <?php echo nl2br(htmlspecialchars($cv['contact'])); ?></p>
                                 <p><strong>Description:</strong> <?php echo nl2br(htmlspecialchars($cv['description'])); ?></p>
                             </div>
+                            <button class="btn btn-primary mt-3" onclick="downloadCV('<?php echo htmlspecialchars($cv['fullname']); ?>', '<?php echo htmlspecialchars($cv['education']); ?>', '<?php echo htmlspecialchars($cv['skills']); ?>', '<?php echo htmlspecialchars($cv['experience']); ?>', '<?php echo htmlspecialchars($cv['contact']); ?>', '<?php echo htmlspecialchars($cv['description']); ?>')">Download CV as PDF</button>
                         </div>
                     </div>
                 </div>
@@ -193,6 +208,72 @@ $username = $_SESSION['username'] ?? null;
             this.classList.add('btn-light');
         }
     });
+
+    function downloadCV(fullname, education, skills, experience, contact, description, profileImagePath) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Set initial vertical position
+        let yPosition = 10;
+
+        // Add Full Name
+        doc.setFontSize(16);
+        doc.setFont("helvetica", "bold");
+        doc.text(`Full Name: ${fullname}`, 10, yPosition);
+        yPosition += 10;
+
+        // Function to add each section with headers and details
+        function addSection(title, content) {
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "bold");
+            doc.text(`${title}:`, 10, yPosition);
+
+            // Reset font for content
+            doc.setFont("helvetica", "normal");
+            const lines = doc.splitTextToSize(content, 180); // Line break for width
+            lines.forEach(line => {
+                yPosition += 7;
+                doc.text(line, 10, yPosition);
+            });
+            yPosition += 10; // Extra space after section
+        }
+
+        // Add CV details
+        addSection("Education", education);
+        addSection("Skills", skills);
+        addSection("Experience", experience);
+        addSection("Contact", contact);
+        addSection("Description", description);
+
+        // Function to convert image to Base64 and then add to PDF
+        function addImageToPDF(base64Image) {
+            doc.addImage(base64Image, 'JPEG', 10, yPosition, 50, 50);
+            yPosition += 60; // Adjust position after adding image
+            doc.save(`${fullname}_CV.pdf`);
+        }
+
+        // Convert the image to Base64
+        if (profileImagePath) {
+            fetch(profileImagePath)
+                .then(response => response.blob())
+                .then(blob => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        addImageToPDF(reader.result);
+                    };
+                    reader.readAsDataURL(blob); // Converts blob to base64
+                })
+                .catch(error => {
+                    console.error('Error loading image:', error);
+                    // Save PDF without image if there is an error
+                    doc.save(`${fullname}_CV.pdf`);
+                });
+        } else {
+            // No image, just save the PDF
+            doc.save(`${fullname}_CV.pdf`);
+        }
+    }
+
 </script>
 </body>
 </html>

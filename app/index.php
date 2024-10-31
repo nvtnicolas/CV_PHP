@@ -84,6 +84,11 @@ try {
             <div class="cv-card card mt-4">
                 <div class="card-body">
                     <h3 class="card-title"><?php echo htmlspecialchars($cv['fullname']); ?></h3>
+                    <?php if (!empty($cv['profile_image']) && file_exists(__DIR__ . '/' . $cv['profile_image'])): ?>
+                        <img src="<?php echo htmlspecialchars($cv['profile_image']); ?>" alt="Profile Image" style="width: 150px; height: auto; margin-bottom: 20px;">
+                    <?php else: ?>
+                        <img src="./uploads/profil.png" alt="Default Profile Image" style="width: 150px; height: auto; margin-bottom: 20px;">
+                    <?php endif; ?>
                     <p><strong>Education:</strong> <?php echo nl2br(htmlspecialchars($cv['education'])); ?></p>
                     <p><strong>Skills:</strong> <?php echo nl2br(htmlspecialchars($cv['skills'])); ?></p>
                     <p><strong>Experience:</strong> <?php echo nl2br(htmlspecialchars($cv['experience'])); ?></p>
@@ -124,4 +129,3 @@ try {
 </script>
 </body>
 </html>
-

@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="d-flex align-items-center">
             <button id="theme-toggle" class="btn btn-light me-2">Dark Mode</button>
             <?php if (!empty($username)): ?>
-                <span>Contact support: <?php echo htmlspecialchars($username); ?></span>
+                <span>Contact support <?php echo htmlspecialchars($username); ?></span>
             <?php endif; ?>
             <a href="auth/logout.php" class="btn btn-danger">Log out</a>
         </div>

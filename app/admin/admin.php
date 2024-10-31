@@ -55,7 +55,7 @@ if (isset($_POST['delete_cvs'])) {
 
 try {
     $stmt = $pdo->query('
-        SELECT u.id, u.username, u.email, u.role, c.id AS cv_id, c.fullname, c.education, c.skills, c.experience, c.contact, c.description
+        SELECT u.id, u.username, u.email, u.role, c.id AS cv_id, c.fullname, c.education, c.skills, c.experience, c.contact, c.description, c.profile_image
         FROM users u
         LEFT JOIN cvs c ON u.id = c.user_id
         ORDER BY u.id
@@ -71,14 +71,12 @@ try {
 
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Admin Panel</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/test.css">
     <style>
         /* General table style to prevent headers from stacking */
         table {
@@ -108,8 +106,44 @@ try {
         }
 
         /* Dark mode styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #f4f4f4;
+        }
+
         body.dark-mode th, body.dark-mode td {
             color: #f4f4f4;
+        }
+
+        body.dark-mode .bg-dark {
+            background-color: #1c1c1c !important;
+        }
+
+        body.dark-mode .btn-secondary {
+            background-color: #333 !important;
+            border-color: #444 !important;
+        }
+
+        body.dark-mode .btn-light {
+            background-color: #444 !important;
+            color: #f4f4f4 !important;
+        }
+
+        body.dark-mode .btn-danger {
+            background-color: #b33a3a !important;
+            border-color: #b33a3a !important;
+        }
+
+        body.dark-mode .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #2c2c2c;
+        }
+
+        body.dark-mode .table-striped tbody tr:nth-of-type(even) {
+            background-color: #1c1c1c;
+        }
+
+        body.dark-mode .table-striped tbody tr:hover {
+            background-color: #333;
         }
     </style>
 </head>
@@ -172,7 +206,7 @@ try {
         </tbody>
     </table>
 
-    <h3>CV by user</h3>
+    <h3>CV by User</h3>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -182,6 +216,7 @@ try {
             <th class="fixed-width">Experience</th>
             <th class="fixed-width">Contact</th>
             <th class="fixed-width">Description</th>
+            <th class="fixed-width">Profile Image</th>
             <th class="fixed-width">Actions</th>
         </tr>
         </thead>
@@ -194,10 +229,17 @@ try {
                 <td class="fixed-width scrollable-cell"><?php echo $user['experience'] !== null ? htmlspecialchars($user['experience']) : 'No CV for the moment'; ?></td>
                 <td class="fixed-width scrollable-cell"><?php echo $user['contact'] !== null ? htmlspecialchars($user['contact']) : 'No CV for the moment'; ?></td>
                 <td class="fixed-width scrollable-cell"><?php echo $user['description'] !== null ? htmlspecialchars($user['description']) : 'No CV for the moment'; ?></td>
-                <td>
+                <td class="fixed-width">
+                    <?php if (!empty($user['profile_image']) && file_exists(__DIR__ . '/../' . $user['profile_image'])): ?>
+                        <img src="<?php echo htmlspecialchars($user['profile_image']); ?>" alt="Profile Image" style="width: 100px; height: auto;">
+                    <?php else: ?>
+                        <img src="../uploads/profil.png" alt="Default Profile Image" style="width: 100px; height: auto;">
+                    <?php endif; ?>
+                </td>
+                <td class="fixed-width">
                     <form method="POST" action="" class="d-inline">
                         <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
-                        <button type="submit" name="delete_user" class="btn btn-danger btn-sm">Delete User</button>
+                        <button type="submit" name="delete_cvs" class="btn btn-warning btn-sm">Delete CV</button>
                     </form>
                 </td>
             </tr>
@@ -256,4 +298,3 @@ try {
 </script>
 </body>
 </html>
-
