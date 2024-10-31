@@ -1,11 +1,12 @@
-
 body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     color: #333;
     line-height: 1.6;
     overflow-x: hidden;
-    min-height: 100vh;
 }
 
 header, footer {
@@ -13,6 +14,9 @@ header, footer {
     color: white;
 }
 
+main {
+    flex: 1;
+}
 
 body.dark-mode {
     background-color: #333;
@@ -23,7 +27,6 @@ header.dark-mode, footer.dark-mode {
     background-color: #222;
 }
 
-
 body.dark-mode .card-body {
     background-color: #444;
     color: #f4f4f4;
@@ -33,7 +36,6 @@ body.dark-mode .table-striped tbody tr td {
     background-color: #333;
     color: #f4f4f4;
 }
-
 
 button, .nav-link {
     background-color: #333;
@@ -58,7 +60,6 @@ button.dark-mode:hover, .nav-link.dark-mode:hover {
     background-color: #777;
 }
 
-
 .form-group {
     margin-bottom: 15px;
 }
@@ -70,7 +71,6 @@ input[type="text"], input[type="email"], textarea {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
-
 
 footer a {
     color: #f4f4f4;
@@ -85,17 +85,16 @@ body.dark-mode .cv-card card {
     color: #f4f4f4;
 }
 
-body.dark-mode .card{
+body.dark-mode .card {
     background-color: #444;
     color: #f4f4f4;
-
 }
-
 
 body.dark-mode .container .my-5 .cv-card.card.mt-4 .card-body {
     background-color: #444;
     color: #f4f4f4;
 }
+
 .fixed-width {
     max-height: 100px;
     overflow-y: auto;
