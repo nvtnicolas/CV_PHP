@@ -1,6 +1,6 @@
 <?php
 
-include __DIR__ . '/./db/db.php'; // Ensure the correct path to the db.php file
+include __DIR__ . '/./db/db.php';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -23,80 +23,9 @@ $username = $_SESSION['username'] ?? null;
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/test.css">
+    <link rel="stylesheet" href="assets/css/project.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <style>
-        .profile-image {
-            width: 150px;
-            height: auto;
-            margin-bottom: 20px;
-        }
-        .swiper-container {
-            width: 100%;
-            padding: 20px 0;
-        }
-        .swiper-slide {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .cv-card {
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 20px;
-            background-color: #f9f9f9;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            max-width: 300px;
-            text-align: center;
-            display: none;
-            transition: all 0.3s ease;
-        }
-        .cv-card.active {
-            display: block;
-        }
-        .cv-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-        .cv-details {
-            display: none;
-        }
-        .cv-card.active .cv-details {
-            display: block;
-        }
-        .cv-name {
-            cursor: pointer;
-            font-size: 1.2em;
-            font-weight: bold;
-            padding: 10px;
-            background-color: #eee;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        body.dark-mode .cv-name {
-            background-color: #444; /* Change this to match the card background */
-            color: #f4f4f4; /* Light text color */
-        }
-        body.dark-mode .cv-card {
-            background-color: #444;
-            color: #f4f4f4;
-            border-color: #555;
-        }
-        body.dark-mode .cv-card:hover {
-            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
-        }
-        body.dark-mode .cv-card .cv-details {
-            background-color: #666; /* Fond gris pour les détails ouverts */
-            color: #f4f4f4; /* Texte blanc pour les détails ouverts */
-        }
-        body.dark-mode .cv-card:not(.active) {
-            background-color: #555; /* Fond gris foncé pour les cartes non ouvertes */
-            color: #f4f4f4; /* Texte blanc pour les cartes non ouvertes */
-        }
-        body.dark-mode .bg-light {
-            background-color: #3d3d3d !important;
-        }
-    </style>
+
 </head>
 <body>
 <header class="bg-dark text-white py-3">
@@ -166,114 +95,8 @@ $username = $_SESSION['username'] ?? null;
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-<script>
-    function toggleCard(nameElement) {
-        const card = nameElement.nextElementSibling;
-        if (card.classList.contains('active')) {
-            card.classList.remove('active');
-        } else {
-            card.classList.add('active');
-        }
-    }
-
-    const swiper = new Swiper('.swiper-container', {
-        slidesPerView: 3,
-        spaceBetween: 30,
-        loop: true,
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        autoplay: {
-            delay: 3000,
-        },
-    });
-
-    document.getElementById('theme-toggle').addEventListener('click', function() {
-        document.body.classList.toggle('dark-mode');
-        const buttons = document.querySelectorAll('button, .nav-btn');
-        buttons.forEach(button => button.classList.toggle('dark-mode'));
-
-        if (document.body.classList.contains('dark-mode')) {
-            this.textContent = 'Light Mode';
-            this.classList.remove('btn-light');
-            this.classList.add('btn-dark');
-        } else {
-            this.textContent = 'Dark Mode';
-            this.classList.remove('btn-dark');
-            this.classList.add('btn-light');
-        }
-    });
-
-    function downloadCV(fullname, education, skills, experience, contact, description, profileImagePath) {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-
-        // Set initial vertical position
-        let yPosition = 10;
-
-        // Add Full Name
-        doc.setFontSize(16);
-        doc.setFont("helvetica", "bold");
-        doc.text(`Full Name: ${fullname}`, 10, yPosition);
-        yPosition += 10;
-
-        // Function to add each section with headers and details
-        function addSection(title, content) {
-            doc.setFontSize(12);
-            doc.setFont("helvetica", "bold");
-            doc.text(`${title}:`, 10, yPosition);
-
-            // Reset font for content
-            doc.setFont("helvetica", "normal");
-            const lines = doc.splitTextToSize(content, 180); // Line break for width
-            lines.forEach(line => {
-                yPosition += 7;
-                doc.text(line, 10, yPosition);
-            });
-            yPosition += 10; // Extra space after section
-        }
-
-        // Add CV details
-        addSection("Education", education);
-        addSection("Skills", skills);
-        addSection("Experience", experience);
-        addSection("Contact", contact);
-        addSection("Description", description);
-
-        // Function to convert image to Base64 and then add to PDF
-        function addImageToPDF(base64Image) {
-            doc.addImage(base64Image, 'JPEG', 10, yPosition, 50, 50);
-            yPosition += 60; // Adjust position after adding image
-            doc.save(`${fullname}_CV.pdf`);
-        }
-
-        // Convert the image to Base64
-        if (profileImagePath) {
-            fetch(profileImagePath)
-                .then(response => response.blob())
-                .then(blob => {
-                    const reader = new FileReader();
-                    reader.onloadend = () => {
-                        addImageToPDF(reader.result);
-                    };
-                    reader.readAsDataURL(blob); // Converts blob to base64
-                })
-                .catch(error => {
-                    console.error('Error loading image:', error);
-                    // Save PDF without image if there is an error
-                    doc.save(`${fullname}_CV.pdf`);
-                });
-        } else {
-            // No image, just save the PDF
-            doc.save(`${fullname}_CV.pdf`);
-        }
-    }
-
-</script>
+<script src="assets/js/swiper.js"></script>
+<script src="assets/js/dark-mode.js"></script>
+<script src="assets/js/download-cv.js"></script>
 </body>
 </html>

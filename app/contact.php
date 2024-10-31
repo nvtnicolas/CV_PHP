@@ -40,27 +40,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact</title>
-
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="assets/css/test.css">
-
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBy5f0XGuQoEQfuV42q1ty4fKZ5LNEXHh4"></script>
-    <script>
-
-        function initMap() {
-            const cityLocation = { lat: 43.6103201, lng: 1.4310661 };
-            const map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 12,
-                center: cityLocation
-            });
-            const marker = new google.maps.Marker({
-                position: cityLocation,
-                map: map
-            });
-        }
-        window.onload = initMap;
-    </script>
+    <script src="assets/js/map.js"></script>
 </head>
 <body>
 <header class="container-fluid bg-dark text-white py-3">
@@ -110,24 +93,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-
-    document.getElementById('theme-toggle').addEventListener('click', function() {
-        document.body.classList.toggle('dark-mode');
-        const buttons = document.querySelectorAll('button, .nav-btn');
-        buttons.forEach(button => button.classList.toggle('dark-mode'));
-
-        // Change button text based on the current theme
-        if (document.body.classList.contains('dark-mode')) {
-            this.textContent = 'Light Mode';
-            this.classList.remove('btn-light');
-            this.classList.add('btn-dark');
-        } else {
-            this.textContent = 'Dark Mode';
-            this.classList.remove('btn-dark');
-            this.classList.add('btn-light');
-        }
-    });
-</script>
+<script src="assets/js/dark-mode.js"></script>
 </body>
 </html>

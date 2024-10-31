@@ -1,6 +1,6 @@
 <?php
 
-include __DIR__ . '/../db/db.php'; // Ensure the correct path to the db.php file
+include __DIR__ . '/../db/db.php';
 
 if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
     echo 'Access denied. Admins only.';
@@ -77,75 +77,7 @@ try {
     <meta charset="UTF-8">
     <title>Admin Panel</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* General table style to prevent headers from stacking */
-        table {
-            width: 100%;
-            table-layout: fixed; /* Ensures columns don't shrink */
-        }
-
-        th, td {
-            white-space: nowrap; /* Prevents wrapping */
-            text-align: left;
-            padding: 8px;
-            vertical-align: middle; /* Centers text vertically */
-            overflow: hidden; /* Hide overflow */
-            text-overflow: ellipsis; /* Add ellipsis for overflow text */
-        }
-
-        /* Fixed width for specific columns */
-        .fixed-width {
-            max-width: 200px; /* Adjust as needed */
-            word-wrap: break-word;
-        }
-
-        /* Scrollable cell content */
-        .scrollable-cell {
-            max-height: 100px; /* Adjust as needed */
-            overflow-y: auto; /* Enable vertical scrolling */
-        }
-
-        /* Dark mode styles */
-        body.dark-mode {
-            background-color: #121212;
-            color: #f4f4f4;
-        }
-
-        body.dark-mode th, body.dark-mode td {
-            color: #f4f4f4;
-        }
-
-        body.dark-mode .bg-dark {
-            background-color: #1c1c1c !important;
-        }
-
-        body.dark-mode .btn-secondary {
-            background-color: #333 !important;
-            border-color: #444 !important;
-        }
-
-        body.dark-mode .btn-light {
-            background-color: #444 !important;
-            color: #f4f4f4 !important;
-        }
-
-        body.dark-mode .btn-danger {
-            background-color: #b33a3a !important;
-            border-color: #b33a3a !important;
-        }
-
-        body.dark-mode .table-striped tbody tr:nth-of-type(odd) {
-            background-color: #2c2c2c;
-        }
-
-        body.dark-mode .table-striped tbody tr:nth-of-type(even) {
-            background-color: #1c1c1c;
-        }
-
-        body.dark-mode .table-striped tbody tr:hover {
-            background-color: #333;
-        }
-    </style>
+    <link rel="stylesheet" href="../assets/css/admin.css" >
 </head>
 <body>
 <header class="bg-dark text-white p-3 mb-4">
@@ -280,21 +212,6 @@ try {
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-    document.getElementById('theme-toggle').addEventListener('click', function() {
-        document.body.classList.toggle('dark-mode');
-
-        // Update text and button color dynamically
-        if (document.body.classList.contains('dark-mode')) {
-            this.textContent = 'Light Mode';
-            this.classList.remove('btn-light');
-            this.classList.add('btn-dark');
-        } else {
-            this.textContent = 'Dark Mode';
-            this.classList.remove('btn-dark');
-            this.classList.add('btn-light');
-        }
-    });
-</script>
+<script src="../assets/js/dark-mode.js"></script>
 </body>
 </html>

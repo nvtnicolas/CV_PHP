@@ -17,7 +17,7 @@ The CV_PHP Project is a web application built using PHP that allows users to cre
 Before running the application, make sure you have the following installed:
 
 - Docker
-- Docker Compose
+- GIT
 
 ## Installation
 
@@ -29,21 +29,16 @@ Follow these steps to set up and run the project locally:
     cd CV_PHP
     ```
 
-2. **Build the Docker image:**
+2. **Run the Docker containers:**
     ```sh
     cd Docker
-    docker build -t cv_php .
-    ```
-
-3. **Run the Docker containers:**
-    ```sh
     docker-compose up --build
     ```
 
-4. **Access the application:**
+3. **Access the application:**
    Once the containers are running, open your browser and go to:
     ```sh
-    http://localhost:8000
+    http://127.0.0.1/
     ```
 
 ## Project Structure
@@ -54,6 +49,8 @@ Follow these steps to set up and run the project locally:
 - `/auth` : Contains the authentication files.
 - `/db`: Contains the database configuration files.
 - `/user`: Contains the user profile files.
+- `/uploads`: Contains the uploaded files (e.g., user profile pictures).
+- `/admin`: Contains the admin files.
 ## Usage
 
 1. **Sign Up / Log In**: Create an account or log in if you already have one.
@@ -61,6 +58,16 @@ Follow these steps to set up and run the project locally:
 3. **View Your CV**: See a preview of your CV and edit it as needed.
 4. **Toggle Dark Mode**: Switch between light and dark modes for improved readability.
 
+## Admin database 
+There is an admin account that you can use to access the admin page
+username : admin1
+password : password123
+
+## Database
+username : root
+password : root
+database : cv_php
+http://127.0.0.1:8080/
 
 ## Contributions
 

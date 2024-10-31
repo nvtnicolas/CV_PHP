@@ -128,48 +128,13 @@ if (isset($_POST['register'])) {
 
 <footer class="bg-dark text-white text-center py-3">
     <p>© 2024 All rights reserved.</p>
-    <p>Contact us at <a class="text-light" href="../Contact.php">nicolas.nguyenvanthnah@ynov.com</a></p>
+    <p>Contact us at <a class="text-light" href="../contact.php">nicolas.nguyenvanthnah@ynov.com</a></p>
 </footer>
 
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    function togglePassword() {
-        var loginPasswordField = document.querySelector('input[name="password"]');
-        var registerPasswordField = document.querySelector('input[name="reg_password"]');
-        var checkbox = document.querySelector('input[type="checkbox"]');
-
-        if (checkbox.checked) {
-            if (loginPasswordField) loginPasswordField.type = "text";
-            if (registerPasswordField) registerPasswordField.type = "text";
-        } else {
-            if (loginPasswordField) loginPasswordField.type = "password";
-            if (registerPasswordField) registerPasswordField.type = "password";
-        }
-    }
-
-
-
-
-
-
-    document.getElementById('theme-toggle').addEventListener('click', function() {
-        document.body.classList.toggle('dark-mode');
-        const buttons = document.querySelectorAll('button, .nav-btn');
-        buttons.forEach(button => button.classList.toggle('dark-mode'));
-
-
-        if (document.body.classList.contains('dark-mode')) {
-            this.textContent = 'Light Mode';
-            this.classList.remove('btn-light');
-            this.classList.add('btn-dark');
-        } else {
-            this.textContent = 'Dark Mode';
-            this.classList.remove('btn-dark');
-            this.classList.add('btn-light');
-        }
-    });
-</script>
+<script src="../assets/js/togglePassword.js"></script>
+<script src="../assets/js/dark-mode.js"></script>
 </body>
 </html>

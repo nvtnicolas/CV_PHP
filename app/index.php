@@ -30,31 +30,9 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/test.css">
-    <style>
-        .dark-mode {
-            background-color: #333;
-            color: #fff;
-        }
-        /* Dark mode styles */
-        body.dark-mode {
-            background-color: #333;
-            color: #f4f4f4;
-        }
-
-        body.dark-mode .cv-card {
-            background-color: #222; /* Darker background for the CV card */
-            color: #f4f4f4; /* Light text for contrast */
-        }
-
-        body.dark-mode .card-body {
-            background-color: #222; /* Darker background for the card body */
-            color: #f4f4f4; /* Light text for contrast */
-        }
-    </style>
+    <title>Home</title>
 </head>
 <body>
 
@@ -110,22 +88,6 @@ try {
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    document.getElementById('theme-toggle').addEventListener('click', function() {
-        document.body.classList.toggle('dark-mode');
-        const buttons = document.querySelectorAll('button, .nav-link');
-        buttons.forEach(button => button.classList.toggle('dark-mode'));
-
-        if (document.body.classList.contains('dark-mode')) {
-            this.textContent = 'Light Mode';
-            this.classList.remove('btn-light');
-            this.classList.add('btn-dark');
-        } else {
-            this.textContent = 'Dark Mode';
-            this.classList.remove('btn-dark');
-            this.classList.add('btn-light');
-        }
-    });
-</script>
+<script src="assets/js/dark-mode.js"></script>
 </body>
 </html>

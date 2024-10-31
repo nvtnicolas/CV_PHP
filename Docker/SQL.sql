@@ -13,7 +13,6 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL,
     role ENUM('user', 'admin') DEFAULT 'user',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    Insert into users (username, email, password, role) values ('admin1', 'admin@gmail.com','$2y$10$.SDathtGcuMmfOhU75tAZemzJoZWc4xPg7X1JJtJXjgmThuxSHoKS', 'admin');
     );
 
 -- Create the cvs table
@@ -39,3 +38,6 @@ CREATE TABLE IF NOT EXISTS contacts (
     message TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
+
+
+INSERT INTO users (username, email, password, role) values ('admin1', 'admin@gmail.com','$2y$10$.SDathtGcuMmfOhU75tAZemzJoZWc4xPg7X1JJtJXjgmThuxSHoKS', 'admin');

@@ -9,18 +9,17 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 if (isset($_GET['page'])) {
     $page = $_GET['page'];
 
-    // Mapping logical page names to their file paths
+
     $allowedPages = [
-        'index' => 'index',        // Correct path is app/index.php
+        'index' => 'index',
         'profile' => 'user/profile',
         'project' => 'project',
-        'contact' => 'Contact',    // Case-sensitive on some systems
-        'admin' => 'admin/admin'   // Add the admin page
+        'contact' => 'Contact',
+        'admin' => 'admin/admin'
     ];
 
-    // Check if the requested page is in the allowedPages
+
     if (array_key_exists($page, $allowedPages)) {
-        // Include the appropriate file based on the page requested
         include $allowedPages[$page] . '.php';
     } else {
         echo "<h1>Error 404: Page not found</h1>";

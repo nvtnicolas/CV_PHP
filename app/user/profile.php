@@ -1,11 +1,11 @@
 <?php
-include __DIR__ . '/../db/db.php'; // Ensure the correct path to the db.php file
+include __DIR__ . '/../db/db.php';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
 $user_id = $_SESSION['user_id'] ?? null;
-$username = $_SESSION['username'] ?? null; // Ensure $username is defined
+$username = $_SESSION['username'] ?? null;
 $profileImagePath = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -16,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $contact = $_POST['contact'];
     $description = $_POST['description'];
 
-    // Ensure the uploads directory exists
     $targetDir = __DIR__ . '/../uploads/';
     if (!is_dir($targetDir)) {
         mkdir($targetDir, 0755, true);
@@ -26,23 +25,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $profileImagePath = $targetDir . basename($_FILES['profile_image']['name']);
         if (!move_uploaded_file($_FILES['profile_image']['tmp_name'], $profileImagePath)) {
             echo '<div class="alert alert-danger">Error uploading image.</div>';
-            $profileImagePath = null; // Set to null if upload fails
+            $profileImagePath = null;
         } else {
-            // Store the relative path to the image
+
             $profileImagePath = 'uploads/' . basename($_FILES['profile_image']['name']);
         }
     } else {
-        $profileImagePath = $_POST['existing_profile_image'] ?? null; // Keep existing image if no new upload
+        $profileImagePath = $_POST['existing_profile_image'] ?? null;
     }
 
     try {
-        // Check if the CV already exists
+
         $stmt = $pdo->prepare('SELECT id FROM cvs WHERE user_id = :user_id');
         $stmt->execute(['user_id' => $user_id]);
         $cv = $stmt->fetch();
 
         if ($cv) {
-            // Update the CV
             $stmt = $pdo->prepare('
                 UPDATE cvs SET fullname = :fullname, education = :education, skills = :skills,
                 experience = :experience, contact = :contact, description = :description,
@@ -55,12 +53,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'experience' => $experience,
                 'contact' => $contact,
                 'description' => $description,
-                'profile_image' => $profileImagePath, // Save image path
+                'profile_image' => $profileImagePath,
                 'user_id' => $user_id
             ]);
             echo '<div class="alert alert-success">CV updated successfully!</div>';
         } else {
-            // Insert a new CV
             $stmt = $pdo->prepare('
                 INSERT INTO cvs (user_id, fullname, education, skills, experience, contact, description, profile_image)
                 VALUES (:user_id, :fullname, :education, :skills, :experience, :contact, :description, :profile_image)
@@ -81,7 +78,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo '<div class="alert alert-danger">Error saving CV: ' . $e->getMessage() . '</div>';
     }
 } else {
-    // Fetch existing CV data
     $stmt = $pdo->prepare('SELECT * FROM cvs WHERE user_id = :user_id');
     $stmt->execute(['user_id' => $user_id]);
     $cv = $stmt->fetch();
@@ -193,27 +189,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <footer class="bg-dark text-white text-center py-3">
     <p>© 2024 All rights reserved.</p>
-    <p>Contact us at <a href="contact.php" class="btn btn-light">nicolas.nguyenvanthnah@ynov.com</a></p>
+    <p>Contact us at <a href="../contact.php" class="btn btn-light">nicolas.nguyenvanthnah@ynov.com</a></p>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    document.getElementById('theme-toggle').addEventListener('click', function() {
-        document.body.classList.toggle('dark-mode');
-        const buttons = document.querySelectorAll('button, .nav-btn');
-        buttons.forEach(button => button.classList.toggle('dark-mode'));
-
-        // Change button text based on the current theme
-        if (document.body.classList.contains('dark-mode')) {
-            this.textContent = 'Light Mode';
-            this.classList.remove('btn-light');
-            this.classList.add('btn-dark');
-        } else {
-            this.textContent = 'Dark Mode';
-            this.classList.remove('btn-dark');
-            this.classList.add('btn-light');
-        }
-    });
-</script>
+<script src="../assets/js/dark-mode.js"></script>
 </body>
 </html>
